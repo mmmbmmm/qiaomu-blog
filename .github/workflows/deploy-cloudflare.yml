@@ -71,12 +71,31 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: npx opennextjs-cloudflare build -c wrangler.local.toml --dangerouslyUseUnsupportedNextVersion
 
+      - name: Upload OpenNext artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: open-next-worker
+          path: |
+            .open-next/worker.js
+            .open-next/assets
+          if-no-files-found: ignore
+
       - name: Deploy worker
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           OPEN_NEXT_DEPLOY: "true"
-        run: npx wrangler deploy .open-next/worker.js -c wrangler.local.toml --no-bundle --assets .open-next/assets
+        shell: bash
+        run: |
+          for attempt in 1 2 3 4 5; do
+            echo "Deploy attempt ${attempt}"
+            if npx wrangler deploy .open-next/worker.js -c wrangler.local.toml --no-bundle --assets .open-next/assets; then
+              exit 0
+            fi
+            sleep $((attempt * 60))
+          done
+          exit 1
 
       - name: Set worker secrets
         env:
