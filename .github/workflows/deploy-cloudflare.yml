@@ -77,8 +77,7 @@ jobs:
         with:
           name: open-next-worker
           path: |
-            .open-next/worker.js
-            .open-next/assets
+            .open-next/**
           if-no-files-found: ignore
 
       - name: Deploy worker
