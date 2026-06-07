@@ -9,8 +9,9 @@ import { getSiteUrl } from '@/lib/site-config'
 const PAGE_SIZE = 25
 const BASE_URL = getSiteUrl()
 
-// Cloudflare Workers 缓存策略
-export const revalidate = 3600 // 1小时缓存
+// Cloudflare Workers runtime data should not be fetched during CI builds.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 export const dynamicParams = true
 
 export const metadata = {

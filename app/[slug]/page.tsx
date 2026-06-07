@@ -15,8 +15,9 @@ import { getPublicContentCacheNamespace } from '@/lib/cache'
 import { getSiteUrl } from '@/lib/site-config'
 import { resolvePostCoverImage } from '@/lib/default-cover-images'
 
-// Cloudflare Workers 缓存策略
-export const revalidate = 86400 // 24小时缓存
+// Cloudflare Workers runtime data should not be fetched during CI builds.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 export const dynamicParams = true
 
 export async function generateMetadata({
