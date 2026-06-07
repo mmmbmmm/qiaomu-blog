@@ -1,8 +1,7 @@
 import { resolve } from "node:path";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 import type { NextConfig } from "next";
-
-void initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   // 图片优化（Cloudflare 有自己的优化）
@@ -24,4 +23,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default function createNextConfig(phase: string) {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    void initOpenNextCloudflareForDev();
+  }
+
+  return nextConfig;
+}
