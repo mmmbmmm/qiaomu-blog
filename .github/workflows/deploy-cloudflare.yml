@@ -90,7 +90,7 @@ jobs:
         run: |
           for attempt in 1 2 3 4 5; do
             echo "Deploy attempt ${attempt}"
-            if npx wrangler deploy .open-next/worker.js -c wrangler.local.toml --no-bundle --assets .open-next/assets; then
+            if npx opennextjs-cloudflare deploy -c wrangler.local.toml; then
               exit 0
             fi
             sleep $((attempt * 60))
