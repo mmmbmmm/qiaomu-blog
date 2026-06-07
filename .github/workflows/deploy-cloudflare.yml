@@ -53,10 +53,6 @@ jobs:
           binding = "IMAGES"
           bucket_name = "qiaomu-blog-images"
 
-          [[routes]]
-          pattern = "blog.agisj.cn"
-          custom_domain = true
-
           [vars]
           NEXT_PUBLIC_SITE_URL = "https://blog.agisj.cn"
           AI_BASE_URL = "${{ secrets.AI_BASE_URL }}"
